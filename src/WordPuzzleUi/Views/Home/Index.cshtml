@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/styles/bootstrap.css" rel="stylesheet" />
+    <link href="~/styles/jonquxburtonwordpuzzle.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/lodash.min.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/config.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/Tile.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/letter.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/model.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/ui.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/gamebuilder.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/gameupdater.js"></script>
+</head>
+<body>
+    <div class="container body-content">
+
+        <h1>Solve the Anagram</h1>
+
+        <div class="well">
+            <p>(by dragging the letters onto the tiles)</p>
+        </div>
+
+        <div id="gameDiv">
+
+        </div>
+
+        <div id="answerResultDiv">
+            <span style="display:none" class="glyphicon glyphicon-ok"></span>
+            <span style="display:none" class="glyphicon glyphicon-remove"></span>
+        </div>
+
+        <div>
+            <button id="resetButton" type="button" class="btn btn-warning">Reset</button>
+        </div>
+
+    </div>
+
+    <script>
+
+            $(function () {
+
+                var config = new JonQuxBurton.WordPuzzle.Config();
+                config.tileSize = 8;
+                config.letterReboundDuration = 100;
+                config.answer = "MALLARD";
+
+                var model = new JonQuxBurton.WordPuzzle.Model("ARDMALL");
+
+                var gameDiv = $("#gameDiv");
+                var answerResultDiv = $("#answerResultDiv");
+
+                var gameBuilder = new JonQuxBurton.WordPuzzle.GameBuilder($, gameDiv, answerResultDiv, config, model);
+                var gameUpdater = new JonQuxBurton.WordPuzzle.GameUpdater($, gameDiv, answerResultDiv, config);
+
+                model.lettersShunted = gameUpdater.lettersShunted;
+                model.answerChanged = gameUpdater.answerChanged;
+
+                gameBuilder.build();
+
+                $("#resetButton").click(function () {
+                    location.reload();
+                });
+            });
+
+    </script>
+</body>
+</html>

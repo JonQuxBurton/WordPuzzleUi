@@ -1,0 +1,23 @@
+﻿{
+  "Compile": {
+    "Mode": "External",
+    "Extensions": [ ".ts" ],
+    "ExtensionsWithNoOutput": [ ".d.ts" ]
+  },
+  "References": [
+    {
+      "Path": "Scripts",
+      "Include": "*.js"
+    },
+    {
+      "Path": "Scripts/jonquxburtonwordpuzzle",
+      "Include": "*.ts"
+    }
+  ],
+  "Tests": [
+    {
+      "Include": "*/specs/*.ts",
+      "Exclude": "*/specs/*.d.ts"
+    }
+  ]
+}

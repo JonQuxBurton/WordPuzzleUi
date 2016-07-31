@@ -1,0 +1,46 @@
+﻿#gameDiv {
+    position: relative;
+    height: 18rem;
+}
+
+#answerResultDiv {
+    position: absolute;
+    padding-top: 1rem;
+}
+
+.letter {
+    position: absolute;
+    color: blue;
+    font-weight: bold;
+    border: 3px solid blue;
+    width: 5.8rem;
+    height: 5.8rem;
+    text-align: center;
+    padding-top: 1.8rem;
+    background-color: white;
+}
+
+.tile {
+    position: absolute;
+    color: green;
+    font-weight: bold;
+    border: 3px dotted green;
+    width: 6.5rem;
+    height: 6.5rem;
+}
+
+.tile-board {
+    border-color: red;
+}
+
+.glyphicon {
+    font-size: 3.3rem;
+}
+
+.glyphicon-ok {
+    color: green;
+}
+
+.glyphicon-remove {
+    color: red;
+}
