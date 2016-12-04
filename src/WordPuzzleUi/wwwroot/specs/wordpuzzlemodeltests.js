@@ -1,10 +1,14 @@
 /// <reference path="../scripts/typings/jasmine/jasmine.d.ts" />
+/// <reference path="../scripts/typings/lodash/lodash.d.ts" />
 describe("When Constructing", function () {
     var model;
     var letters;
+    var puzzle;
     beforeEach(function () {
         letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
     });
     it("it creates Rack tiles", function () {
         expect(model.rackTiles.length).toBe(letters.length);
@@ -24,12 +28,39 @@ describe("When Constructing", function () {
         expect(model.boardTiles[1].id).toBe(letters.length + 2);
         expect(model.boardTiles[2].id).toBe(letters.length + 3);
     });
+    it("it creates horizontal Board tiles", function () {
+        letters = "CATMT";
+        var lines = [{ origin: { x: 0, y: 1 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }, { origin: { x: 1, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Vertical }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
+        expect(model.boardTiles.length).toBe(letters.length);
+        expect(model.boardTiles[0].x).toBe(0);
+        expect(model.boardTiles[0].y).toBe(1);
+        expect(model.boardTiles[1].x).toBe(1);
+        expect(model.boardTiles[1].y).toBe(1);
+        expect(model.boardTiles[2].x).toBe(2);
+        expect(model.boardTiles[2].y).toBe(1);
+    });
+    it("it creates vertical Board tiles", function () {
+        letters = "CATMT";
+        var lines = [{ origin: { x: 0, y: 1 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }, { origin: { x: 1, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Vertical }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
+        expect(model.boardTiles.length).toBe(letters.length);
+        expect(model.boardTiles[3].x).toBe(1);
+        expect(model.boardTiles[3].y).toBe(0);
+        expect(model.boardTiles[4].x).toBe(1);
+        expect(model.boardTiles[4].y).toBe(2);
+    });
 });
 describe("When moveToTile() moves a Letter from Rack tile to Board Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
     });
     it("the Letter is on the Board Tile", function () {
         model.moveToTile(1, 4);
@@ -78,9 +109,12 @@ describe("When moveToTile() moves a Letter from Rack tile to Board Tile", functi
 });
 describe("When moveToTile() moves a Letter from Board tile to Rack Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
     });
     it("the Letter is on Rack Tile", function () {
         model.moveToTile(1, 4);
@@ -129,9 +163,12 @@ describe("When moveToTile() moves a Letter from Board tile to Rack Tile", functi
 });
 describe("When moveToTile() moves a Letter from Rack tile to Rack Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
     });
     it("the Letter is on the Rack Tile", function () {
         model.moveToTile(1, 4);
@@ -172,9 +209,12 @@ describe("When moveToTile() moves a Letter from Rack tile to Rack Tile", functio
 });
 describe("When moveToTile() moves a Letter from Rack tile to the same Rack Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
     });
     it("the Letter is on the same Rack Tile", function () {
         model.moveToTile(1, 1);
@@ -195,9 +235,12 @@ describe("When moveToTile() moves a Letter from Rack tile to the same Rack Tile"
 });
 describe("When moveToTile() moves a Letter from Rack tile to an empty Rack Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
         model.moveToTile(2, 4);
     });
     it("the Letter is on the Rack Tile", function () {
@@ -219,9 +262,12 @@ describe("When moveToTile() moves a Letter from Rack tile to an empty Rack Tile"
 });
 describe("When moveToTile() moves a Letter from Board tile to Board Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
         model.moveToTile(1, 4);
         model.moveToTile(2, 5);
         model.moveToTile(3, 6);
@@ -270,9 +316,12 @@ describe("When moveToTile() moves a Letter from Board tile to Board Tile", funct
 });
 describe("When moveToTile() moves a Letter from Board tile to the same Board Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
         model.moveToTile(1, 4);
     });
     it("the Letter is on the same Board Tile", function () {
@@ -301,9 +350,12 @@ describe("When moveToTile() moves a Letter from Board tile to the same Board Til
 });
 describe("When moveToTile() moves a Letter from Board tile to an empty Board Tile", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
         model.moveToTile(1, 4);
     });
     it("the Letter is on the Board Tile", function () {
@@ -332,9 +384,12 @@ describe("When moveToTile() moves a Letter from Board tile to an empty Board Til
 });
 describe("When getAnswer()", function () {
     var model;
+    var puzzle;
     beforeEach(function () {
         var letters = "ABC";
-        model = new JonQuxBurton.WordPuzzle.Model(letters);
+        var lines = [{ origin: { x: 0, y: 0 }, length: 3, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+        puzzle = new JonQuxBurton.WordPuzzle.Puzzle(letters, lines);
+        model = new JonQuxBurton.WordPuzzle.Model(puzzle);
         model.moveToTile(1, 4);
         model.moveToTile(2, 5);
         model.moveToTile(3, 6);

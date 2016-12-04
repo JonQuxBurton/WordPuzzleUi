@@ -10,14 +10,14 @@
 
 .letter {
     position: absolute;
-    color: blue;
+    color: white;
+    background-color: cornflowerblue;
     font-weight: bold;
+    font-size: 4rem;
     border: 3px solid blue;
     width: 5.8rem;
     height: 5.8rem;
     text-align: center;
-    padding-top: 1.8rem;
-    background-color: white;
 }
 
 .tile {

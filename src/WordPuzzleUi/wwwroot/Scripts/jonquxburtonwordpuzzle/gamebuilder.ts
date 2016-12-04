@@ -30,7 +30,7 @@ namespace JonQuxBurton.WordPuzzle {
             var numberOfLetters = this.model.rackTiles.length;
 
             _(this.model.boardTiles).forEach(function (tile) {
-                self.appendTile(self.gameDiv, tile.id, ((tile.id - 1) - numberOfLetters) * tileSize, tileSize + "rem", "tile-board");
+                self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
             });
 
             this.answerResultDiv.css({ left: ((numberOfLetters) * tileSize) + "rem", top: tileSize + "rem" });

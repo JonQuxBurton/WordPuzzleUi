@@ -10,7 +10,11 @@
     <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
     <script src="~/Scripts/lodash.min.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/config.js"></script>
-    <script src="~/Scripts/jonquxburtonwordpuzzle/Tile.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/direction.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/point.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/puzzleline.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/puzzle.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/tile.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/letter.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/model.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/ui.js"></script>
@@ -50,7 +54,10 @@
                 config.letterReboundDuration = 100;
                 config.answer = "MALLARD";
 
-                var model = new JonQuxBurton.WordPuzzle.Model("ARDMALL");
+                var lines = [{ origin: { x: 0, y: 1 }, length: 7, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
+                var puzzle = new JonQuxBurton.WordPuzzle.Puzzle("ARDMALL", lines);
+
+                var model = new JonQuxBurton.WordPuzzle.Model(puzzle);
 
                 var gameDiv = $("#gameDiv");
                 var answerResultDiv = $("#answerResultDiv");

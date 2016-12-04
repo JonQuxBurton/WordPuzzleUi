@@ -10,21 +10,43 @@ namespace JonQuxBurton.WordPuzzle {
         public lettersShunted: (sourceTileId: number, destinationTileId: number) => void;
         public answerChanged: (newAnswer: string) => void;
 
-        constructor(letters: string) {
+        constructor(puzzle: Puzzle) {
 
-            this.letters = letters;
+            this.letters = puzzle.letters;
             this.rackTiles = new Array<Tile>();
             this.boardTiles = new Array<Tile>();
 
+            var letters = this.letters;
             var id = 1;
 
             for (var i = 0; i < letters.length; i++) {
                 this.rackTiles.push(new Tile(id++, new Letter(letters[i]), false, 0, 0, false, false));
             }
 
-            for (var i = 0; i < letters.length; i++) {
-                this.boardTiles.push(new Tile(id++, new Letter(""), false, 0, 0, false, true));
-            }
+            var self = this;
+
+            _(puzzle.lines).forEach(function (line) {
+                
+                for (var i = 0; i < line.length; i++) {
+
+                    var dX = 0;
+                    var dY = 0;
+
+                    if (line.direction === Direction.Vertical)
+                        dY = i;
+                    else
+                        dX = i;
+
+                    var x = line.origin.x + dX;
+                    var y = line.origin.y + dY;
+
+                    var doubleTile = _.find(self.boardTiles, function (o) { return o.x == x && o.y == y; });
+
+                    if (_.isUndefined(doubleTile)) {
+                        self.boardTiles.push(new Tile(id++, new Letter(""), false, x, y, false, true));
+                    }
+                }
+            });
         }
 
         public moveToTile(sourceTileId: number, destinationTileId: number) {
