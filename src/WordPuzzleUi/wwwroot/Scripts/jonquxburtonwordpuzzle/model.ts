@@ -8,7 +8,7 @@ namespace JonQuxBurton.WordPuzzle {
         public rackTiles: Array<Tile>;
         public boardTiles: Array<Tile>;
         public lettersShunted: (sourceTileId: number, destinationTileId: number) => void;
-        public answerChanged: (newAnswer: string) => void;
+        public answerChanged: (newAnswer: Array<string>) => void;
 
         constructor(puzzle: Puzzle) {
 
@@ -73,7 +73,7 @@ namespace JonQuxBurton.WordPuzzle {
                 this.answerChanged(this.getAnswer());
         }
 
-        public getAnswer(): string {
+        public getAnswer(): Array<string> {
 
             var letters = _.map(this.boardTiles, (x) => {
                 if (x.letter.isBlank())
@@ -82,7 +82,7 @@ namespace JonQuxBurton.WordPuzzle {
                     return x.letter.value;
             });
 
-            return _.join(letters, "");
+            return [_.join(letters, "")];
         }
 
         private shuntLetters(startTile: Tile) {

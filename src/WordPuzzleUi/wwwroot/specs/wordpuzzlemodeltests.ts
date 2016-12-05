@@ -147,7 +147,7 @@ describe("When moveToTile() moves a Letter from Rack tile to Board Tile", functi
 
         model.moveToTile(1, 4);
 
-        expect(observer.callback).toHaveBeenCalledWith("A  ");
+        expect(observer.callback).toHaveBeenCalledWith(["A  "]);
     });
 });
 
@@ -226,7 +226,7 @@ describe("When moveToTile() moves a Letter from Board tile to Rack Tile", functi
 
         model.moveToTile(4, 1);
 
-        expect(observer.callback).toHaveBeenCalledWith("   ");
+        expect(observer.callback).toHaveBeenCalledWith(["   "]);
     });
 });
 
@@ -448,7 +448,7 @@ describe("When moveToTile() moves a Letter from Board tile to Board Tile", funct
 
         model.moveToTile(4, 6);
 
-        expect(observer.callback).toHaveBeenCalledWith(" BA");
+        expect(observer.callback).toHaveBeenCalledWith([" BA"]);
     });
 });
 
@@ -551,7 +551,7 @@ describe("When moveToTile() moves a Letter from Board tile to an empty Board Til
 
         model.moveToTile(4, 5);
 
-        expect(observer.callback).toHaveBeenCalledWith(" A ");
+        expect(observer.callback).toHaveBeenCalledWith([" A "]);
     });
 });
 
@@ -572,15 +572,15 @@ describe("When getAnswer()", function () {
         model.moveToTile(3, 6);
     });
 
-    it("the Letters are returned as a string", function () {
+    it("the Letters are returned as an array of strings", function () {
 
-        expect(model.getAnswer()).toBe("ABC");
+        expect(model.getAnswer()).toEqual(["ABC"]);
     });
 
     it("an empty Tiles is returned as an empty string", function () {
 
         model.moveToTile(5, 1);
 
-        expect(model.getAnswer()).toBe("A C");
+        expect(model.getAnswer()).toEqual(["A C"]);
     });
 });

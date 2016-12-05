@@ -52,7 +52,7 @@ var JonQuxBurton;
                     else
                         return x.letter.value;
                 });
-                return _.join(letters, "");
+                return [_.join(letters, "")];
             };
             Model.prototype.shuntLetters = function (startTile) {
                 var _this = this;
