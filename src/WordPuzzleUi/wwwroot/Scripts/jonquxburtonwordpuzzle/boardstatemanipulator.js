@@ -9,7 +9,7 @@ var JonQuxBurton;
             BoardStateManipulator.prototype.moveLetterToEmptyTile = function (letter, destinationTile) {
                 destinationTile.letter = letter;
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
             };
             BoardStateManipulator.prototype.shuntToRight = function (targetTile) {
@@ -27,7 +27,7 @@ var JonQuxBurton;
                 }
                 targetTile.letter = new WordPuzzle.Letter("");
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
             };
             BoardStateManipulator.prototype.shuntToLeft = function (targetTile) {
@@ -47,7 +47,7 @@ var JonQuxBurton;
                 }
                 targetTile.letter = new WordPuzzle.Letter("");
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
             };
             BoardStateManipulator.prototype.shuntRackToRight = function (targetTile) {
@@ -61,7 +61,7 @@ var JonQuxBurton;
                         this.boardState.lettersShunted(this.boardState.rack[previousTileIndex].id, this.boardState.rack[currentTileIndex].id);
                     }
                     if (this.boardState.answerChanged) {
-                        this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                        this.boardState.answerChanged(this.boardState.getAnswer());
                     }
                     currentTileIndex--;
                     previousTileIndex = currentTileIndex - 1;
@@ -91,7 +91,7 @@ var JonQuxBurton;
                     this.boardState.lettersShunted(destinationTile.id, originTile.id);
                 }
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
             };
             return BoardStateManipulator;

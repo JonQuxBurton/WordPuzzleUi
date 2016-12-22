@@ -13,7 +13,7 @@
             destinationTile.letter = letter;
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -38,7 +38,7 @@
             targetTile.letter = new Letter("");
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -65,7 +65,7 @@
             targetTile.letter = new Letter("");
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -84,7 +84,7 @@
                 }
 
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
 
                 currentTileIndex--;
@@ -125,7 +125,7 @@
             }
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
     }

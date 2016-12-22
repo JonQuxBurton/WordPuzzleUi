@@ -60,7 +60,7 @@ describe("When moveLetterToEmptyTile()", function () {
 
         boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
 
-        var observer = { callback: function (newAsnwer: string) { } };
+        var observer = { callback: function (newAnswer: Array<string>) { } };
         spyOn(observer, "callback").and.callThrough();
 
         boardState.answerChanged = observer.callback;
@@ -68,7 +68,7 @@ describe("When moveLetterToEmptyTile()", function () {
         boardStateManipulator.moveLetterToEmptyTile(boardState.rack[0].letter, boardState.lines[0][0])
 
         expect(observer.callback).toHaveBeenCalledTimes(1);
-        expect(observer.callback).toHaveBeenCalledWith("C  ");
+        expect(observer.callback).toHaveBeenCalledWith(["C  ", "   "]);
     });
 
 });
@@ -301,10 +301,10 @@ describe("When shuntToLeft()", function () {
     });
 
     testCases([
-        ['    N', 4, '   N '],
-        ['   AN', 3, '  A N'],
-        ['  IAN', 2, ' I AN'],
-        [' VIAN', 1, 'V IAN'],
+        ['    N', 4, ['   N ']],
+        ['   AN', 3, ['  A N']],
+        ['  IAN', 2, [' I AN']],
+        [' VIAN', 1, ['V IAN']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged events are published", function () {
 
@@ -312,7 +312,7 @@ describe("When shuntToLeft()", function () {
             var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
             buildLine(boardState, letters);
 
-            var observer = { callback: function (newAsnwer: string) { } };
+            var observer = { callback: function (newAnswer: Array<string>) { } };
             spyOn(observer, "callback").and.callThrough();
 
             boardState.answerChanged = observer.callback;
@@ -353,8 +353,8 @@ describe("When shuntToRight()", function () {
 describe("When shuntToRight()", function () {
 
     testCases([
-        ['A    ', 0, ' A   '],
-        ['SA   ', 1, 'S A  '],
+        ['A    ', 0, [' A   ']],
+        ['SA   ', 1, ['S A  ']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged events are published", function () {
 
@@ -362,7 +362,7 @@ describe("When shuntToRight()", function () {
             buildLine(boardState, letters);
             var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
 
-            var observer = { callback: function (newAnswer: string) { } };
+            var observer = { callback: function (newAnswer: Array<string>) { } };
             spyOn(observer, "callback").and.callThrough();
 
             boardState.answerChanged = observer.callback;
@@ -415,7 +415,7 @@ describe("When shuntToRack()", function () {
     });
 
     testCases([
-        ['SWAN', 0, ' WAN'],
+        ['SWAN', 0, [' WAN']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged event is published", function () {
 
@@ -424,7 +424,7 @@ describe("When shuntToRack()", function () {
 
             var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
 
-            var observer = { callback: function (newAnswer: string) { } };
+            var observer = { callback: function (newAnswer: Array<string>) { } };
             spyOn(observer, "callback").and.callThrough();
 
             boardState.answerChanged = observer.callback;

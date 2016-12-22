@@ -5,6 +5,6 @@ namespace JonQuxBurton.WordPuzzle {
 
         public tileSize: number;
         public letterReboundDuration: number;
-        public answer: string;
+        public answer: Array<string>;
     }
 }

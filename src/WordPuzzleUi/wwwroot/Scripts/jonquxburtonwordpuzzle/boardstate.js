@@ -88,6 +88,17 @@ var JonQuxBurton;
                 });
                 return boardTile;
             };
+            BoardState.prototype.getBoardTiles = function () {
+                var allTiles = new Array();
+                _.forEach(this.lines, function (line) {
+                    _.forEach(line, function (tile) {
+                        var existing = _.find(allTiles, function (x) { return x.id == tile.id; });
+                        if (existing == null)
+                            allTiles.push(tile);
+                    });
+                });
+                return allTiles;
+            };
             return BoardState;
         }());
         WordPuzzle.BoardState = BoardState;

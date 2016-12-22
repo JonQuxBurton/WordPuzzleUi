@@ -38,12 +38,12 @@ describe("When moveLetterToEmptyTile()", function () {
     it("answerChanged event is published", function () {
         boardState.rack[0].letter = new JonQuxBurton.WordPuzzle.Letter("C");
         boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
-        var observer = { callback: function (newAsnwer) { } };
+        var observer = { callback: function (newAnswer) { } };
         spyOn(observer, "callback").and.callThrough();
         boardState.answerChanged = observer.callback;
         boardStateManipulator.moveLetterToEmptyTile(boardState.rack[0].letter, boardState.lines[0][0]);
         expect(observer.callback).toHaveBeenCalledTimes(1);
-        expect(observer.callback).toHaveBeenCalledWith("C  ");
+        expect(observer.callback).toHaveBeenCalledWith(["C  ", "   "]);
     });
 });
 describe("When shuntToRight()", function () {
@@ -215,16 +215,16 @@ describe("When shuntToLeft()", function () {
         expect(answer[0]).toBe("HERRO ");
     });
     testCases([
-        ['    N', 4, '   N '],
-        ['   AN', 3, '  A N'],
-        ['  IAN', 2, ' I AN'],
-        [' VIAN', 1, 'V IAN'],
+        ['    N', 4, ['   N ']],
+        ['   AN', 3, ['  A N']],
+        ['  IAN', 2, [' I AN']],
+        [' VIAN', 1, ['V IAN']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged events are published", function () {
             var boardState = buildBoard(5);
             var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
             buildLine(boardState, letters);
-            var observer = { callback: function (newAsnwer) { } };
+            var observer = { callback: function (newAnswer) { } };
             spyOn(observer, "callback").and.callThrough();
             boardState.answerChanged = observer.callback;
             boardStateManipulator.shuntToLeft(boardState.lines[0][targetTileIndex]);
@@ -253,8 +253,8 @@ describe("When shuntToRight()", function () {
 });
 describe("When shuntToRight()", function () {
     testCases([
-        ['A    ', 0, ' A   '],
-        ['SA   ', 1, 'S A  '],
+        ['A    ', 0, [' A   ']],
+        ['SA   ', 1, ['S A  ']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged events are published", function () {
             var boardState = buildBoard(5);
@@ -296,7 +296,7 @@ describe("When shuntToRack()", function () {
         });
     });
     testCases([
-        ['SWAN', 0, ' WAN'],
+        ['SWAN', 0, [' WAN']],
     ], function (letters, targetTileIndex, expected) {
         it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged event is published", function () {
             var boardState = buildBoard(4);

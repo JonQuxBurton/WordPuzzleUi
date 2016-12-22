@@ -3,7 +3,7 @@
     export class BoardState {
 
         public lettersShunted: (sourceTileId: number, destinationTileId: number) => void;
-        public answerChanged: (newAnswer: string) => void;
+        public answerChanged: (newAnswer: Array<string>) => void;
 
         constructor(public rack: Array<Tile>, public lines: Array<Array<Tile>>) {
         }
@@ -131,6 +131,22 @@
             });
 
             return boardTile;
+        }
+
+        public getBoardTiles(): Array<Tile> {
+
+            var allTiles = new Array<Tile>();
+
+            _.forEach(this.lines, (line) => {
+                _.forEach(line, (tile) => {
+                    var existing = _.find(allTiles, (x) => x.id == tile.id);
+
+                    if (existing == null)
+                        allTiles.push(tile);
+                });
+            });
+
+            return allTiles;
         }
     }
 }
