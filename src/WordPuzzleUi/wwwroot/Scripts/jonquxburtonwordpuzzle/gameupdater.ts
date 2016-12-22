@@ -16,23 +16,6 @@ namespace JonQuxBurton.WordPuzzle {
             this.config = config;
         }
 
-        public answerChanged = (newAnswer: string) => {
-
-            if (newAnswer.indexOf(" ") >= 0) {
-                this.answerResultDiv.children(".glyphicon-ok").hide();
-                this.answerResultDiv.children(".glyphicon-remove").hide();
-                return;
-            }
-
-            if (newAnswer == this.config.answer) {
-                this.answerResultDiv.children(".glyphicon-ok").show();
-                this.answerResultDiv.children(".glyphicon-remove").hide();
-            } else {
-                this.answerResultDiv.children(".glyphicon-ok").hide();
-                this.answerResultDiv.children(".glyphicon-remove").show();
-            }
-        }
-
         public lettersShunted = (sourceTileId: number, destinationTileId: number) => {
 
             var sourceTile = this.getTileFromId(sourceTileId);

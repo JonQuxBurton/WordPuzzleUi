@@ -5,21 +5,6 @@ var JonQuxBurton;
         var GameUpdater = (function () {
             function GameUpdater($, gameDiv, answerResultDiv, config) {
                 var _this = this;
-                this.answerChanged = function (newAnswer) {
-                    if (newAnswer.indexOf(" ") >= 0) {
-                        _this.answerResultDiv.children(".glyphicon-ok").hide();
-                        _this.answerResultDiv.children(".glyphicon-remove").hide();
-                        return;
-                    }
-                    if (newAnswer == _this.config.answer) {
-                        _this.answerResultDiv.children(".glyphicon-ok").show();
-                        _this.answerResultDiv.children(".glyphicon-remove").hide();
-                    }
-                    else {
-                        _this.answerResultDiv.children(".glyphicon-ok").hide();
-                        _this.answerResultDiv.children(".glyphicon-remove").show();
-                    }
-                };
                 this.lettersShunted = function (sourceTileId, destinationTileId) {
                     var sourceTile = _this.getTileFromId(sourceTileId);
                     var letterHandle = _this.getLetterFromTileId(sourceTileId);

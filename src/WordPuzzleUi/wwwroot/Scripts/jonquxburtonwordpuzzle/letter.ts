@@ -8,5 +8,12 @@ namespace JonQuxBurton.WordPuzzle {
         public isBlank() {
             return this.value == "";
         }
+
+        public getValueOrSpace(): string {
+            if (this.isBlank())
+                return " ";
+
+            return this.value;
+        }
     }
 }

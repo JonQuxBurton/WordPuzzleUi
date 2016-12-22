@@ -12,6 +12,9 @@
     {
       "Path": "Scripts/jonquxburtonwordpuzzle",
       "Include": "*.ts"
+    },
+    {
+      "Include": "*/specs/helpers.ts"
     }
   ],
   "Tests": [

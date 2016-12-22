@@ -9,6 +9,11 @@ var JonQuxBurton;
             Letter.prototype.isBlank = function () {
                 return this.value == "";
             };
+            Letter.prototype.getValueOrSpace = function () {
+                if (this.isBlank())
+                    return " ";
+                return this.value;
+            };
             return Letter;
         }());
         WordPuzzle.Letter = Letter;

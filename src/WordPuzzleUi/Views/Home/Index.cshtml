@@ -20,6 +20,10 @@
     <script src="~/Scripts/jonquxburtonwordpuzzle/ui.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/gamebuilder.js"></script>
     <script src="~/Scripts/jonquxburtonwordpuzzle/gameupdater.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/boardstate.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/boardstatefactory.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/boardstatemanipulator.js"></script>
+    <script src="~/Scripts/jonquxburtonwordpuzzle/boardcontroller.js"></script>
 </head>
 <body>
     <div class="container body-content">
@@ -47,26 +51,31 @@
 
     <script>
 
+        var config;
+
             $(function () {
 
-                var config = new JonQuxBurton.WordPuzzle.Config();
+                config = new JonQuxBurton.WordPuzzle.Config();
                 config.tileSize = 8;
                 config.letterReboundDuration = 100;
                 config.answer = "MALLARD";
 
                 var lines = [{ origin: { x: 0, y: 1 }, length: 7, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
-                var puzzle = new JonQuxBurton.WordPuzzle.Puzzle("ARDMALL", lines);
+                var puzzle = new JonQuxBurton.WordPuzzle.Puzzle("MALLADR", lines);
 
-                var model = new JonQuxBurton.WordPuzzle.Model(puzzle);
+                var boardStateFactory = new JonQuxBurton.WordPuzzle.BoardStateFactory();
+                var boardState = boardStateFactory.build(puzzle);
+                var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
+                var boardController = new JonQuxBurton.WordPuzzle.BoardController(boardState, boardStateManipulator);
 
                 var gameDiv = $("#gameDiv");
                 var answerResultDiv = $("#answerResultDiv");
 
-                var gameBuilder = new JonQuxBurton.WordPuzzle.GameBuilder($, gameDiv, answerResultDiv, config, model);
+                var gameBuilder = new JonQuxBurton.WordPuzzle.GameBuilder($, gameDiv, answerResultDiv, config, boardController, boardState);
                 var gameUpdater = new JonQuxBurton.WordPuzzle.GameUpdater($, gameDiv, answerResultDiv, config);
 
-                model.lettersShunted = gameUpdater.lettersShunted;
-                model.answerChanged = gameUpdater.answerChanged;
+                boardState.lettersShunted = gameUpdater.lettersShunted;
+                boardState.answerChanged = answerChanged;
 
                 gameBuilder.build();
 
@@ -74,6 +83,25 @@
                     location.reload();
                 });
             });
+
+            function answerChanged(newAnswer) {
+
+                var answerResultDiv = $("#answerResultDiv");
+
+                if (newAnswer.indexOf(" ") >= 0) {
+                    answerResultDiv.children(".glyphicon-ok").hide();
+                    answerResultDiv.children(".glyphicon-remove").hide();
+                    return;
+                }
+
+                if (newAnswer == config.answer) {
+                    answerResultDiv.children(".glyphicon-ok").show();
+                    answerResultDiv.children(".glyphicon-remove").hide();
+                } else {
+                    answerResultDiv.children(".glyphicon-ok").hide();
+                    answerResultDiv.children(".glyphicon-remove").show();
+                }
+            }
 
     </script>
 </body>

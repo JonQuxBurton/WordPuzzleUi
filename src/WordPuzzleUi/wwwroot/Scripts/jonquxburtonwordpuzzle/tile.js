@@ -3,8 +3,9 @@ var JonQuxBurton;
     var WordPuzzle;
     (function (WordPuzzle) {
         var Tile = (function () {
-            function Tile(id, letter, isDone, x, y, isBonusTile, isBoardTile) {
+            function Tile(id, lineIndex, letter, isDone, x, y, isBonusTile, isBoardTile) {
                 this.id = id;
+                this.lineIndex = lineIndex;
                 this.letter = letter;
                 this.isDone = isDone;
                 this.x = x;

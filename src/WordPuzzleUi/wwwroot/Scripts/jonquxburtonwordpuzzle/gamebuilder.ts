@@ -7,14 +7,16 @@ namespace JonQuxBurton.WordPuzzle {
         private gameDiv: JQuery;
         private answerResultDiv: JQuery;
         private config;
-        private model;
+        private boardState;
+        private boardController;
 
-        constructor($: JQueryStatic, gameDiv: JQuery, answerResultDiv:JQuery, config: Config, model: WordPuzzle.Model) {
+        constructor($: JQueryStatic, gameDiv: JQuery, answerResultDiv: JQuery, config: Config, boardController: WordPuzzle.BoardController, boardState: WordPuzzle.BoardState) {
             this.$ = $;
             this.gameDiv = gameDiv;
             this.answerResultDiv = answerResultDiv;
             this.config = config;
-            this.model = model;
+            this.boardController = boardController;
+            this.boardState = boardState;
         }
 
         public build() {
@@ -22,16 +24,22 @@ namespace JonQuxBurton.WordPuzzle {
             var tileSize = this.config.tileSize;
             var self = this;
 
-            _(this.model.rackTiles).forEach(function (tile) {
+            _(this.boardState.rack).forEach(function (tile) {
                 var newTile = self.appendTile(self.gameDiv, tile.id, (tile.id - 1) * tileSize, "0", "");
                 self.appendLetter(newTile, tile.letter.value);
             });
 
-            var numberOfLetters = this.model.rackTiles.length;
+            var numberOfLetters = this.boardState.rack.length;
 
-            _(this.model.boardTiles).forEach(function (tile) {
-                self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+            _.forEach(this.boardState.lines, (line) => {
+                _.forEach(line, (tile) => {
+                    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+                });
             });
+
+            //_(this.model.boardTiles).forEach(function (tile) {
+            //    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+            //});
 
             this.answerResultDiv.css({ left: ((numberOfLetters) * tileSize) + "rem", top: tileSize + "rem" });
 
@@ -95,7 +103,7 @@ namespace JonQuxBurton.WordPuzzle {
                     sourceDiv.appendTo($(this));
                     sourceDiv.css({ top: 0, left: 0 });
 
-                    self.model.moveToTile(sourceTileId, destinationTileId);
+                    self.boardController.moveLetter(sourceTileId, destinationTileId);
                 }
             });
         }

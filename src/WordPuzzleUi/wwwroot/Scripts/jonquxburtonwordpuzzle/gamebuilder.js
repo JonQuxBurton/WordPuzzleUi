@@ -3,7 +3,7 @@ var JonQuxBurton;
     var WordPuzzle;
     (function (WordPuzzle) {
         var GameBuilder = (function () {
-            function GameBuilder($, gameDiv, answerResultDiv, config, model) {
+            function GameBuilder($, gameDiv, answerResultDiv, config, boardController, boardState) {
                 var _this = this;
                 this.getLetterFromTileId = function (sourceTileId) {
                     return _this.$("div[data-tileid=" + sourceTileId + "]").children().first();
@@ -12,19 +12,25 @@ var JonQuxBurton;
                 this.gameDiv = gameDiv;
                 this.answerResultDiv = answerResultDiv;
                 this.config = config;
-                this.model = model;
+                this.boardController = boardController;
+                this.boardState = boardState;
             }
             GameBuilder.prototype.build = function () {
                 var tileSize = this.config.tileSize;
                 var self = this;
-                _(this.model.rackTiles).forEach(function (tile) {
+                _(this.boardState.rack).forEach(function (tile) {
                     var newTile = self.appendTile(self.gameDiv, tile.id, (tile.id - 1) * tileSize, "0", "");
                     self.appendLetter(newTile, tile.letter.value);
                 });
-                var numberOfLetters = this.model.rackTiles.length;
-                _(this.model.boardTiles).forEach(function (tile) {
-                    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+                var numberOfLetters = this.boardState.rack.length;
+                _.forEach(this.boardState.lines, function (line) {
+                    _.forEach(line, function (tile) {
+                        self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+                    });
                 });
+                //_(this.model.boardTiles).forEach(function (tile) {
+                //    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+                //});
                 this.answerResultDiv.css({ left: ((numberOfLetters) * tileSize) + "rem", top: tileSize + "rem" });
                 this.gameDiv.append(this.answerResultDiv);
                 this.enableDragAndDrop();
@@ -67,7 +73,7 @@ var JonQuxBurton;
                         var sourceTileId = self.getTileIdFromLetterDiv(sourceDiv);
                         sourceDiv.appendTo($(this));
                         sourceDiv.css({ top: 0, left: 0 });
-                        self.model.moveToTile(sourceTileId, destinationTileId);
+                        self.boardController.moveLetter(sourceTileId, destinationTileId);
                     }
                 });
             };
