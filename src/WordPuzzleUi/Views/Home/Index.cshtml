@@ -99,14 +99,17 @@
                 }
 
                 for (var i = 0; i < newAnswer.length; i++) {
-                    if (newAnswer[i] == config.answer[i]) {
-                        answerResultDiv.children(".glyphicon-ok").show();
-                        answerResultDiv.children(".glyphicon-remove").hide();
-                    } else {
+
+                    if (newAnswer[i] != config.answer[i]) {
                         answerResultDiv.children(".glyphicon-ok").hide();
                         answerResultDiv.children(".glyphicon-remove").show();
+
+                        return;
                     }
                 }
+
+                answerResultDiv.children(".glyphicon-ok").show();
+                answerResultDiv.children(".glyphicon-remove").hide();
             }
 
     </script>
