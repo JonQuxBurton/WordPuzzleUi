@@ -522,3 +522,124 @@ describe("When shuntRackToRight()", function () {
         });
     });
 });
+
+describe("When shuntDown()", function () {
+
+    var boardState;
+    var boardStateManipulator;
+
+    beforeEach(function () {
+
+        var lines = new Array<Array<JonQuxBurton.WordPuzzle.Tile>>();
+
+        var line = new Array<JonQuxBurton.WordPuzzle.Tile>();
+        line.push(new JonQuxBurton.WordPuzzle.Tile(10, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 0, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(11, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 1, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(12, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(13, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 3, 1, false, false));
+        lines.push(line)
+
+        line = new Array<JonQuxBurton.WordPuzzle.Tile>();
+        line.push(new JonQuxBurton.WordPuzzle.Tile(14, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 0, false, false));
+        line.push(lines[0][2]);
+        line.push(new JonQuxBurton.WordPuzzle.Tile(15, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 2, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(16, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 3, false, false));
+        lines.push(line)
+
+        boardState = new JonQuxBurton.WordPuzzle.BoardState([], lines);
+        boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
+    });
+
+    testCases([
+        ["  K ", 2, "    ", "   K"], // Start with 3 Blanks
+        [" W  ", 1, "    ", "  W "],
+        ["  K ", 2, "    ", "   K"],
+        ["HW  ", 1, "    ", "H W "], // Start with 2 Blanks
+        ["AW  ", 0, "  A ", " AW "],
+        ["A W ", 0, "  A ", " AW "],
+        ["H K ", 2, "    ", "H  K"],
+        ["A  K", 0, "  A ", " A K"],
+        [" WK ", 1, "    ", "  WK"],
+        [" AK ", 2, "  A ", " A K"],
+        [" W K", 1, "    ", "  WK"],
+        ["AWK ", 0, "  A ", " AWK"], // Start with 1 Blank
+        ["HWK ", 1, "    ", "H WK"],
+        ["HAK ", 2, "  A ", "HA K"],
+        ["AW K", 0, "  A ", " AWK"],
+        ["HW K", 1, "    ", "H WK"],
+        ["A WK", 0, "  A ", " AWK"],
+
+    ], function (letters, targetTileIndex, expectedAnswer0, expectedAnswer1) {
+        it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " the Letters are shunted to the right", function () {
+
+            buildLine(boardState, letters, 1);
+
+            boardStateManipulator.shuntDown(boardState.lines[1][targetTileIndex])
+
+            var answer = boardState.getAnswer();
+            expect(answer[0]).toBe(expectedAnswer0);
+            expect(answer[1]).toBe(expectedAnswer1);
+        });
+    });
+});
+
+describe("When shuntUp()", function () {
+
+    var boardStateManipulator;
+    var boardState;
+    var lines;
+
+    beforeEach(function () {
+
+        lines = new Array<Array<JonQuxBurton.WordPuzzle.Tile>>();
+
+        var line = new Array<JonQuxBurton.WordPuzzle.Tile>();
+        line.push(new JonQuxBurton.WordPuzzle.Tile(0, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 0, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(1, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 1, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(2, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 1, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(3, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 3, 1, false, false));
+        lines.push(line)
+
+        line = new Array<JonQuxBurton.WordPuzzle.Tile>();
+        line.push(new JonQuxBurton.WordPuzzle.Tile(4, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 0, false, false));
+        line.push(lines[0][2]);
+        line.push(new JonQuxBurton.WordPuzzle.Tile(5, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 2, false, false));
+        line.push(new JonQuxBurton.WordPuzzle.Tile(6, 0, new JonQuxBurton.WordPuzzle.Letter(""), false, 2, 3, false, false));
+        lines.push(line)
+
+        boardState = new JonQuxBurton.WordPuzzle.BoardState([], lines);
+        boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
+    });
+
+    testCases([
+        ['   W', 3, "    ", "  W "],
+        ['  A ', 2, "  A ", " A  "],
+        [' H  ', 1, "    ", "H   "],
+        ['  AW', 3, "  A ", " AW "], // Start with 2 Blanks
+        ['  AK', 2, "  A ", " A K"],
+        [' A W', 3, "  A ", " AW "],
+        [' H K', 1, "    ", "H  K"],
+        ['H  W', 3, "    ", "H W "],
+        [' HA ', 2, "  A ", "HA  "],
+        [' HW ', 1, "    ", "H W "],
+        ['H A ', 2, "  A ", "HA  "],
+        [' HAW', 3, "  A ", "HAW "], // Start with 1 Blank
+        [' HAK', 2, "  A ", "HA K"],
+        [' HWK', 1, "    ", "H WK"],
+        ['HA W', 3, "  A ", "HAW "],
+        ['H AW', 3, "  A ", "HAW "],
+        ['H AK', 2, "  A ", "HA K"],
+
+    ], function (letters, targetTileIndex, expectedLine0, expectedLine1) {
+        it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " the Letters are shunted up", function () {
+
+            buildLine(boardState, letters, 1);
+
+            boardStateManipulator.shuntUp(boardState.lines[1][targetTileIndex])
+
+            var answer = boardState.getAnswer();
+            expect(answer[0]).toBe(expectedLine0);
+            expect(answer[1]).toBe(expectedLine1);
+        });
+    });
+});

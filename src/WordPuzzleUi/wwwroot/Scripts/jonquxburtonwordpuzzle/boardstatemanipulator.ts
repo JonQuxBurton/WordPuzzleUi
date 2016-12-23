@@ -42,6 +42,33 @@
             }
         }
 
+        public shuntDown(targetTile: Tile) {
+            var line = this.boardState.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+            var firstBlankIndexRightOfTile = _.findIndex(line.slice(tileLinePosition), (x) => { return x.letter.isBlank() }) + tileLinePosition;
+
+            var currentTileIndex = firstBlankIndexRightOfTile;
+            var previousTileIndex = currentTileIndex - 1;
+
+            while (currentTileIndex > tileLinePosition) {
+                line[currentTileIndex].letter = line[previousTileIndex].letter;
+
+                if (this.boardState.lettersShunted) {
+                    this.boardState.lettersShunted(line[previousTileIndex].id, line[currentTileIndex].id);
+                }
+
+                currentTileIndex--;
+                previousTileIndex = currentTileIndex - 1;
+            }
+
+            targetTile.letter = new Letter("");
+
+            if (this.boardState.answerChanged) {
+                this.boardState.answerChanged(this.boardState.getAnswer());
+            }
+        }
+
         public shuntToLeft(targetTile: Tile) {
             var tileLinePosition = _.findIndex(this.boardState.lines[0], (x) => { return x.id == targetTile.id });
             var firstBlankIndexLeftOfTile = this.boardState.getFirstBlankToLeftOfTile(targetTile);
@@ -55,6 +82,35 @@
 
                     if (this.boardState.lettersShunted) {
                         this.boardState.lettersShunted(this.boardState.lines[0][nextTileIndex].id, this.boardState.lines[0][currentTileIndex].id);
+                    }
+
+                }
+                currentTileIndex++;
+                nextTileIndex = currentTileIndex + 1;
+            }
+
+            targetTile.letter = new Letter("");
+
+            if (this.boardState.answerChanged) {
+                this.boardState.answerChanged(this.boardState.getAnswer());
+            }
+        }
+
+        public shuntUp(targetTile: Tile) {
+            var line = this.boardState.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+            var firstBlankIndexLeftOfTile = this.boardState.getFirstBlankAboveTile(targetTile);
+
+            var currentTileIndex = 0;
+            var nextTileIndex = currentTileIndex + 1;
+
+            while (currentTileIndex < (line.length - 1)) {
+                if (firstBlankIndexLeftOfTile < nextTileIndex && tileLinePosition >= nextTileIndex) {
+                    line[currentTileIndex].letter = line[nextTileIndex].letter;
+
+                    if (this.boardState.lettersShunted) {
+                        this.boardState.lettersShunted(line[nextTileIndex].id, line[currentTileIndex].id);
                     }
 
                 }

@@ -34,6 +34,14 @@ var JonQuxBurton;
                         this.boardStateManipulator.shuntToLeft(destinationTile);
                         this.boardStateManipulator.moveLetterToEmptyTile(transitioningLetter, destinationTile);
                     }
+                    else if (this.boardState.canShuntDown(destinationTile)) {
+                        this.boardStateManipulator.shuntDown(destinationTile);
+                        this.boardStateManipulator.moveLetterToEmptyTile(transitioningLetter, destinationTile);
+                    }
+                    else if (this.boardState.canShuntUp(destinationTile)) {
+                        this.boardStateManipulator.shuntUp(destinationTile);
+                        this.boardStateManipulator.moveLetterToEmptyTile(transitioningLetter, destinationTile);
+                    }
                     else {
                         this.boardStateManipulator.shuntToRack(originTile, destinationTile);
                     }

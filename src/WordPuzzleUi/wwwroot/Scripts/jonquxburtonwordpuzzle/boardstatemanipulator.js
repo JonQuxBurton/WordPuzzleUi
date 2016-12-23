@@ -30,6 +30,25 @@ var JonQuxBurton;
                     this.boardState.answerChanged(this.boardState.getAnswer());
                 }
             };
+            BoardStateManipulator.prototype.shuntDown = function (targetTile) {
+                var line = this.boardState.lines[1];
+                var tileLinePosition = _.findIndex(line, function (x) { return x.id == targetTile.id; });
+                var firstBlankIndexRightOfTile = _.findIndex(line.slice(tileLinePosition), function (x) { return x.letter.isBlank(); }) + tileLinePosition;
+                var currentTileIndex = firstBlankIndexRightOfTile;
+                var previousTileIndex = currentTileIndex - 1;
+                while (currentTileIndex > tileLinePosition) {
+                    line[currentTileIndex].letter = line[previousTileIndex].letter;
+                    if (this.boardState.lettersShunted) {
+                        this.boardState.lettersShunted(line[previousTileIndex].id, line[currentTileIndex].id);
+                    }
+                    currentTileIndex--;
+                    previousTileIndex = currentTileIndex - 1;
+                }
+                targetTile.letter = new WordPuzzle.Letter("");
+                if (this.boardState.answerChanged) {
+                    this.boardState.answerChanged(this.boardState.getAnswer());
+                }
+            };
             BoardStateManipulator.prototype.shuntToLeft = function (targetTile) {
                 var tileLinePosition = _.findIndex(this.boardState.lines[0], function (x) { return x.id == targetTile.id; });
                 var firstBlankIndexLeftOfTile = this.boardState.getFirstBlankToLeftOfTile(targetTile);
@@ -40,6 +59,27 @@ var JonQuxBurton;
                         this.boardState.lines[0][currentTileIndex].letter = this.boardState.lines[0][nextTileIndex].letter;
                         if (this.boardState.lettersShunted) {
                             this.boardState.lettersShunted(this.boardState.lines[0][nextTileIndex].id, this.boardState.lines[0][currentTileIndex].id);
+                        }
+                    }
+                    currentTileIndex++;
+                    nextTileIndex = currentTileIndex + 1;
+                }
+                targetTile.letter = new WordPuzzle.Letter("");
+                if (this.boardState.answerChanged) {
+                    this.boardState.answerChanged(this.boardState.getAnswer());
+                }
+            };
+            BoardStateManipulator.prototype.shuntUp = function (targetTile) {
+                var line = this.boardState.lines[1];
+                var tileLinePosition = _.findIndex(line, function (x) { return x.id == targetTile.id; });
+                var firstBlankIndexLeftOfTile = this.boardState.getFirstBlankAboveTile(targetTile);
+                var currentTileIndex = 0;
+                var nextTileIndex = currentTileIndex + 1;
+                while (currentTileIndex < (line.length - 1)) {
+                    if (firstBlankIndexLeftOfTile < nextTileIndex && tileLinePosition >= nextTileIndex) {
+                        line[currentTileIndex].letter = line[nextTileIndex].letter;
+                        if (this.boardState.lettersShunted) {
+                            this.boardState.lettersShunted(line[nextTileIndex].id, line[currentTileIndex].id);
                         }
                     }
                     currentTileIndex++;

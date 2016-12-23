@@ -3,12 +3,13 @@ function testCases(arrayOfArrays, testCaseFunction) {
         testCaseFunction.apply(this, innerArray);
     });
 }
-function buildLine(boardState, letters) {
+function buildLine(boardState, letters, lineIndex) {
+    if (lineIndex === void 0) { lineIndex = 0; }
     _.forEach(letters, function (letter, index) {
         if (letter == ' ')
-            boardState.lines[0][index].letter.value = '';
+            boardState.lines[lineIndex][index].letter.value = '';
         else
-            boardState.lines[0][index].letter.value = letter;
+            boardState.lines[lineIndex][index].letter.value = letter;
     });
 }
 function buildRackLine(boardState, letters) {
