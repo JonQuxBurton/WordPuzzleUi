@@ -13,7 +13,7 @@
             destinationTile.letter = letter;
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -38,7 +38,34 @@
             targetTile.letter = new Letter("");
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
+            }
+        }
+
+        public shuntDown(targetTile: Tile) {
+            var line = this.boardState.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+            var firstBlankIndexRightOfTile = _.findIndex(line.slice(tileLinePosition), (x) => { return x.letter.isBlank() }) + tileLinePosition;
+
+            var currentTileIndex = firstBlankIndexRightOfTile;
+            var previousTileIndex = currentTileIndex - 1;
+
+            while (currentTileIndex > tileLinePosition) {
+                line[currentTileIndex].letter = line[previousTileIndex].letter;
+
+                if (this.boardState.lettersShunted) {
+                    this.boardState.lettersShunted(line[previousTileIndex].id, line[currentTileIndex].id);
+                }
+
+                currentTileIndex--;
+                previousTileIndex = currentTileIndex - 1;
+            }
+
+            targetTile.letter = new Letter("");
+
+            if (this.boardState.answerChanged) {
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -65,7 +92,36 @@
             targetTile.letter = new Letter("");
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
+            }
+        }
+
+        public shuntUp(targetTile: Tile) {
+            var line = this.boardState.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+            var firstBlankIndexLeftOfTile = this.boardState.getFirstBlankAboveTile(targetTile);
+
+            var currentTileIndex = 0;
+            var nextTileIndex = currentTileIndex + 1;
+
+            while (currentTileIndex < (line.length - 1)) {
+                if (firstBlankIndexLeftOfTile < nextTileIndex && tileLinePosition >= nextTileIndex) {
+                    line[currentTileIndex].letter = line[nextTileIndex].letter;
+
+                    if (this.boardState.lettersShunted) {
+                        this.boardState.lettersShunted(line[nextTileIndex].id, line[currentTileIndex].id);
+                    }
+
+                }
+                currentTileIndex++;
+                nextTileIndex = currentTileIndex + 1;
+            }
+
+            targetTile.letter = new Letter("");
+
+            if (this.boardState.answerChanged) {
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
 
@@ -84,7 +140,7 @@
                 }
 
                 if (this.boardState.answerChanged) {
-                    this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                    this.boardState.answerChanged(this.boardState.getAnswer());
                 }
 
                 currentTileIndex--;
@@ -116,16 +172,17 @@
             targetTile.letter = new Letter("");
         }
 
-        public shuntToRack(originTile: Tile, destinationTile: Tile) {
+        public shuntToRack(originTile: Tile, destinationTile: Tile, transitioningLetter: Letter) {
 
             originTile.letter = destinationTile.letter;
+            destinationTile.letter = transitioningLetter;
 
             if (this.boardState.lettersShunted) {
                 this.boardState.lettersShunted(destinationTile.id, originTile.id);
             }
 
             if (this.boardState.answerChanged) {
-                this.boardState.answerChanged(this.boardState.getAnswer()[0]);
+                this.boardState.answerChanged(this.boardState.getAnswer());
             }
         }
     }

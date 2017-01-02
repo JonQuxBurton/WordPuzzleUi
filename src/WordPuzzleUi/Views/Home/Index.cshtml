@@ -58,10 +58,12 @@
                 config = new JonQuxBurton.WordPuzzle.Config();
                 config.tileSize = 8;
                 config.letterReboundDuration = 100;
-                config.answer = "MALLARD";
+                config.answer = ["SWAN", "HAWK"];
 
-                var lines = [{ origin: { x: 0, y: 1 }, length: 7, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal }];
-                var puzzle = new JonQuxBurton.WordPuzzle.Puzzle("MALLADR", lines);
+                var lines = [{ origin: { x: 0, y: 2 }, length: 4, direction: JonQuxBurton.WordPuzzle.Direction.Horizontal },
+                    { origin: { x: 2, y: 1 }, length: 4, direction: JonQuxBurton.WordPuzzle.Direction.Vertical }
+                ];
+                var puzzle = new JonQuxBurton.WordPuzzle.Puzzle("SWANHWK", lines);
 
                 var boardStateFactory = new JonQuxBurton.WordPuzzle.BoardStateFactory();
                 var boardState = boardStateFactory.build(puzzle);
@@ -88,19 +90,26 @@
 
                 var answerResultDiv = $("#answerResultDiv");
 
-                if (newAnswer.indexOf(" ") >= 0) {
-                    answerResultDiv.children(".glyphicon-ok").hide();
-                    answerResultDiv.children(".glyphicon-remove").hide();
-                    return;
+                for (var i = 0; i < newAnswer.length; i++) {
+                    if (newAnswer[i].indexOf(" ") >= 0) {
+                        answerResultDiv.children(".glyphicon-ok").hide();
+                        answerResultDiv.children(".glyphicon-remove").hide();
+                        return;
+                    }
                 }
 
-                if (newAnswer == config.answer) {
-                    answerResultDiv.children(".glyphicon-ok").show();
-                    answerResultDiv.children(".glyphicon-remove").hide();
-                } else {
-                    answerResultDiv.children(".glyphicon-ok").hide();
-                    answerResultDiv.children(".glyphicon-remove").show();
+                for (var i = 0; i < newAnswer.length; i++) {
+
+                    if (newAnswer[i] != config.answer[i]) {
+                        answerResultDiv.children(".glyphicon-ok").hide();
+                        answerResultDiv.children(".glyphicon-remove").show();
+
+                        return;
+                    }
                 }
+
+                answerResultDiv.children(".glyphicon-ok").show();
+                answerResultDiv.children(".glyphicon-remove").hide();
             }
 
     </script>

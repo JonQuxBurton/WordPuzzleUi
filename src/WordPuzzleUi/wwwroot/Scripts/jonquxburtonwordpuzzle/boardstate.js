@@ -22,12 +22,18 @@ var JonQuxBurton;
                 var tileLinePosition = _.findIndex(this.lines[0], function (x) { return x.id == targetTile.id; });
                 return _.findLastIndex(this.lines[0].slice(0, tileLinePosition), function (x) { return x.letter.isBlank(); });
             };
+            BoardState.prototype.getFirstBlankAboveTile = function (targetTile) {
+                var tileLinePosition = _.findIndex(this.lines[1], function (x) { return x.id == targetTile.id; });
+                return _.findLastIndex(this.lines[1].slice(0, tileLinePosition), function (x) { return x.letter.isBlank(); });
+            };
             BoardState.prototype.getFirstBlankToLeftOfTileOnRack = function (targetTile) {
                 var tileLinePosition = _.findIndex(this.rack, function (x) { return x.id == targetTile.id; });
                 return _.findLastIndex(this.rack.slice(0, tileLinePosition), function (x) { return x.letter.isBlank(); });
             };
             BoardState.prototype.canShuntRight = function (targetTile) {
                 var tileLinePosition = _.findIndex(this.lines[0], function (x) { return x.id == targetTile.id; });
+                if (tileLinePosition == -1)
+                    return false;
                 if (tileLinePosition == (this.lines[0].length) - 1)
                     return false;
                 if (targetTile.letter.isBlank())
@@ -37,13 +43,43 @@ var JonQuxBurton;
                     return false;
                 return true;
             };
+            BoardState.prototype.canShuntDown = function (targetTile) {
+                var line = this.lines[1];
+                var tileLinePosition = _.findIndex(line, function (x) { return x.id == targetTile.id; });
+                if (tileLinePosition == -1)
+                    return false;
+                if (tileLinePosition == (line.length) - 1)
+                    return false;
+                if (targetTile.letter.isBlank())
+                    return true;
+                var firstBlankRightOfTileIndex = _.findIndex(line.slice(tileLinePosition), function (x) { return x.letter.isBlank(); });
+                if (firstBlankRightOfTileIndex == -1)
+                    return false;
+                return true;
+            };
             BoardState.prototype.canShuntLeft = function (targetTile) {
                 var tileLinePosition = _.findIndex(this.lines[0], function (x) { return x.id == targetTile.id; });
+                if (tileLinePosition == -1)
+                    return false;
                 if (tileLinePosition == 0)
                     return false;
                 if (targetTile.letter.isBlank())
                     return true;
                 var firstBlank = this.getFirstBlankToLeftOfTile(targetTile);
+                if (firstBlank == -1)
+                    return false;
+                return true;
+            };
+            BoardState.prototype.canShuntUp = function (targetTile) {
+                var line = this.lines[1];
+                var tileLinePosition = _.findIndex(line, function (x) { return x.id == targetTile.id; });
+                if (tileLinePosition == -1)
+                    return false;
+                if (tileLinePosition == 0)
+                    return false;
+                if (targetTile.letter.isBlank())
+                    return true;
+                var firstBlank = this.getFirstBlankAboveTile(targetTile);
                 if (firstBlank == -1)
                     return false;
                 return true;
@@ -87,6 +123,17 @@ var JonQuxBurton;
                         return false;
                 });
                 return boardTile;
+            };
+            BoardState.prototype.getBoardTiles = function () {
+                var allTiles = new Array();
+                _.forEach(this.lines, function (line) {
+                    _.forEach(line, function (tile) {
+                        var existing = _.find(allTiles, function (x) { return x.id == tile.id; });
+                        if (existing == null)
+                            allTiles.push(tile);
+                    });
+                });
+                return allTiles;
             };
             return BoardState;
         }());

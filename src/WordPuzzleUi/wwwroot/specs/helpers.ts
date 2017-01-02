@@ -5,14 +5,16 @@ function testCases(arrayOfArrays, testCaseFunction) {
     });
 }
 
-function buildLine(boardState: JonQuxBurton.WordPuzzle.BoardState, letters: string) {
+function buildLine(boardState: JonQuxBurton.WordPuzzle.BoardState, letters: string, lineIndex: number = 0) {
     _.forEach(letters, (letter, index) => {
         if (letter == ' ')
-            boardState.lines[0][index].letter.value = '';
+            boardState.lines[lineIndex][index].letter.value = '';
         else
-            boardState.lines[0][index].letter.value = letter;
+            boardState.lines[lineIndex][index].letter.value = letter;
     });
 }
+
+
 
 function buildRackLine(boardState: JonQuxBurton.WordPuzzle.BoardState, letters: string) {
     _.forEach(letters, (letter, index) => {

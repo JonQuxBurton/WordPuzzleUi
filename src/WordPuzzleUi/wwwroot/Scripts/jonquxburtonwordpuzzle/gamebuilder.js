@@ -23,14 +23,9 @@ var JonQuxBurton;
                     self.appendLetter(newTile, tile.letter.value);
                 });
                 var numberOfLetters = this.boardState.rack.length;
-                _.forEach(this.boardState.lines, function (line) {
-                    _.forEach(line, function (tile) {
-                        self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
-                    });
+                _.forEach(this.boardState.getBoardTiles(), function (tile) {
+                    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
                 });
-                //_(this.model.boardTiles).forEach(function (tile) {
-                //    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
-                //});
                 this.answerResultDiv.css({ left: ((numberOfLetters) * tileSize) + "rem", top: tileSize + "rem" });
                 this.gameDiv.append(this.answerResultDiv);
                 this.enableDragAndDrop();

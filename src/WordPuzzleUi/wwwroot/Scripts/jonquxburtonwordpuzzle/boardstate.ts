@@ -3,7 +3,7 @@
     export class BoardState {
 
         public lettersShunted: (sourceTileId: number, destinationTileId: number) => void;
-        public answerChanged: (newAnswer: string) => void;
+        public answerChanged: (newAnswer: Array<string>) => void;
 
         constructor(public rack: Array<Tile>, public lines: Array<Array<Tile>>) {
         }
@@ -30,15 +30,21 @@
             return _.findLastIndex(this.lines[0].slice(0, tileLinePosition), (x) => { return x.letter.isBlank() });
         }
 
+        public getFirstBlankAboveTile(targetTile: Tile): number {
+            var tileLinePosition = _.findIndex(this.lines[1], (x) => { return x.id == targetTile.id });
+            return _.findLastIndex(this.lines[1].slice(0, tileLinePosition), (x) => { return x.letter.isBlank() });
+        }
 
         public getFirstBlankToLeftOfTileOnRack(targetTile: Tile): number {
             var tileLinePosition = _.findIndex(this.rack, (x) => { return x.id == targetTile.id });
             return _.findLastIndex(this.rack.slice(0, tileLinePosition), (x) => { return x.letter.isBlank() });
         }
 
-
         public canShuntRight(targetTile: Tile): boolean {
             var tileLinePosition = _.findIndex(this.lines[0], (x) => { return x.id == targetTile.id });
+
+            if (tileLinePosition == -1)
+                return false;
 
             if (tileLinePosition == (this.lines[0].length) - 1)
                 return false;
@@ -54,8 +60,34 @@
             return true;
         }
 
+        public canShuntDown(targetTile: Tile): boolean {
+
+            var line = this.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+
+            if (tileLinePosition == -1)
+                return false;
+
+            if (tileLinePosition == (line.length) - 1)
+                return false;
+
+            if (targetTile.letter.isBlank())
+                return true;
+
+            var firstBlankRightOfTileIndex = _.findIndex(line.slice(tileLinePosition), (x) => { return x.letter.isBlank() });
+
+            if (firstBlankRightOfTileIndex == -1)
+                return false;
+
+            return true;
+        }
+
         public canShuntLeft(targetTile: Tile): boolean {
             var tileLinePosition = _.findIndex(this.lines[0], (x) => { return x.id == targetTile.id });
+
+            if (tileLinePosition == -1)
+                return false;
 
             if (tileLinePosition == 0)
                 return false;
@@ -64,6 +96,28 @@
                 return true;
 
             var firstBlank = this.getFirstBlankToLeftOfTile(targetTile);
+
+            if (firstBlank == -1)
+                return false;
+
+            return true;
+        }
+
+        public canShuntUp(targetTile: Tile): boolean {
+            var line = this.lines[1];
+
+            var tileLinePosition = _.findIndex(line, (x) => { return x.id == targetTile.id });
+
+            if (tileLinePosition == -1)
+                return false;
+
+            if (tileLinePosition == 0)
+                return false;
+
+            if (targetTile.letter.isBlank())
+                return true;
+
+            var firstBlank = this.getFirstBlankAboveTile(targetTile);
 
             if (firstBlank == -1)
                 return false;
@@ -131,6 +185,22 @@
             });
 
             return boardTile;
+        }
+
+        public getBoardTiles(): Array<Tile> {
+
+            var allTiles = new Array<Tile>();
+
+            _.forEach(this.lines, (line) => {
+                _.forEach(line, (tile) => {
+                    var existing = _.find(allTiles, (x) => x.id == tile.id);
+
+                    if (existing == null)
+                        allTiles.push(tile);
+                });
+            });
+
+            return allTiles;
         }
     }
 }
