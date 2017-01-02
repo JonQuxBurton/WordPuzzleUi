@@ -46,7 +46,7 @@
                     this.boardStateManipulator.shuntUp(destinationTile);
                     this.boardStateManipulator.moveLetterToEmptyTile(transitioningLetter, destinationTile);
                 } else {
-                    this.boardStateManipulator.shuntToRack(originTile, destinationTile);
+                    this.boardStateManipulator.shuntToRack(originTile, destinationTile, transitioningLetter);
                 }
             }
         }

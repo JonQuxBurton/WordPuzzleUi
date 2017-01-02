@@ -139,6 +139,26 @@ describe("When moveLetter()", function () {
             expect(boardStateManipulator.shuntToLeft).not.toHaveBeenCalled();
             expect(boardStateManipulator.shuntToRight).not.toHaveBeenCalled();
         });
+        it("given the destination Tile is not Blank, the Letter is shunted to the Rack", function () {
+            boardState.rack[0].letter.value = "M";
+            boardState.lines[0][0].letter.value = "C";
+            boardState.lines[0][1].letter.value = "A";
+            boardState.lines[0][2].letter.value = "T";
+            spyOn(boardStateManipulator, "moveLetterToEmptyTile").and.callThrough();
+            spyOn(boardStateManipulator, "shuntToRight").and.callThrough();
+            spyOn(boardStateManipulator, "shuntToLeft").and.callThrough();
+            spyOn(boardStateManipulator, "shuntUp").and.callThrough();
+            spyOn(boardStateManipulator, "shuntDown").and.callThrough();
+            spyOn(boardStateManipulator, "shuntToRack").and.callThrough();
+            var boardController = new JonQuxBurton.WordPuzzle.BoardController(boardState, boardStateManipulator);
+            boardController.moveLetter(0, 3);
+            expect(boardStateManipulator.shuntToRack).toHaveBeenCalledTimes(1);
+            expect(boardStateManipulator.shuntToRack).toHaveBeenCalledWith(jasmine.objectContaining({ id: 0 }), jasmine.objectContaining({ id: 3 }));
+            expect(boardStateManipulator.shuntToRight).not.toHaveBeenCalled();
+            expect(boardStateManipulator.shuntToLeft).not.toHaveBeenCalled();
+            expect(boardStateManipulator.shuntUp).not.toHaveBeenCalled();
+            expect(boardStateManipulator.shuntDown).not.toHaveBeenCalled();
+        });
     });
     describe("from a Board Tile to a Rack Tile", function () {
         it("given the destination Tile is Blank, the Letter is moved to the destination Tile", function () {

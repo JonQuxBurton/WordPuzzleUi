@@ -274,11 +274,11 @@ describe("When shuntToRack()", function () {
         var boardState = buildBoard(4);
         buildLine(boardState, "BWAN");
         var boardStateManipulator = new JonQuxBurton.WordPuzzle.BoardStateManipulator(boardState);
-        boardStateManipulator.shuntToRack(boardState.lines[0][0], boardState.rack[0]);
+        var transitioningLetter = boardState.lines[0][0].letter;
+        boardStateManipulator.shuntToRack(boardState.lines[0][0], boardState.rack[0], transitioningLetter);
         var answer = boardState.getAnswer();
         expect(answer[0]).toBe(" WAN");
-        //expect(boardState.rack[0].letter.value).toBe("B");
-        expect(boardState.rack[0].letter.value).toBe("");
+        expect(boardState.rack[0].letter.value).toBe("B");
     });
     testCases([
         ['SWAN', 0, 0, 0],

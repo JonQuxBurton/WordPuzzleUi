@@ -125,8 +125,9 @@ var JonQuxBurton;
                 }
                 targetTile.letter = new WordPuzzle.Letter("");
             };
-            BoardStateManipulator.prototype.shuntToRack = function (originTile, destinationTile) {
+            BoardStateManipulator.prototype.shuntToRack = function (originTile, destinationTile, transitioningLetter) {
                 originTile.letter = destinationTile.letter;
+                destinationTile.letter = transitioningLetter;
                 if (this.boardState.lettersShunted) {
                     this.boardState.lettersShunted(destinationTile.id, originTile.id);
                 }

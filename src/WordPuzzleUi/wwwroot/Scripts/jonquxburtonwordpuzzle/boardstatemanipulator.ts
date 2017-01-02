@@ -172,9 +172,10 @@
             targetTile.letter = new Letter("");
         }
 
-        public shuntToRack(originTile: Tile, destinationTile: Tile) {
+        public shuntToRack(originTile: Tile, destinationTile: Tile, transitioningLetter: Letter) {
 
             originTile.letter = destinationTile.letter;
+            destinationTile.letter = transitioningLetter;
 
             if (this.boardState.lettersShunted) {
                 this.boardState.lettersShunted(destinationTile.id, originTile.id);
