@@ -1,4 +1,6 @@
-﻿namespace JonQuxBurton.WordPuzzle {
+﻿/// <reference path="boardstatemanipulator.ts" />
+/// <reference path="boardstatemanipulator.ts" />
+namespace JonQuxBurton.WordPuzzle {
 
     export class BoardState {
 

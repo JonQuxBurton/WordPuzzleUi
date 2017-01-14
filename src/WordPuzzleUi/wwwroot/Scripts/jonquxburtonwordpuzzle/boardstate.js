@@ -1,3 +1,5 @@
+/// <reference path="boardstatemanipulator.ts" />
+/// <reference path="boardstatemanipulator.ts" />
 var JonQuxBurton;
 (function (JonQuxBurton) {
     var WordPuzzle;

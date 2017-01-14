@@ -408,7 +408,7 @@ describe("When shuntToRack()", function () {
 
             boardState.lettersShunted = observer.callback;
 
-            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0])
+            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0], null)
 
             expect(observer.callback).toHaveBeenCalledTimes(1);
             expect(observer.callback).toHaveBeenCalledWith(boardState.rack[shuntedTileDestination].id, boardState.lines[0][shuntedTileOrigin].id);
@@ -430,7 +430,7 @@ describe("When shuntToRack()", function () {
 
             boardState.answerChanged = observer.callback;
 
-            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0])
+            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0], null)
 
             expect(observer.callback).toHaveBeenCalledTimes(1);
             expect(observer.callback).toHaveBeenCalledWith(expected);
@@ -522,6 +522,25 @@ describe("When shuntRackToRight()", function () {
             expect(actual).toBe(expected);
         });
     });
+
+    testCases([
+        ["WAN ", 0, " WAN"]
+    ], function (letters, targetTileIndex, expected) {
+        it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged event is not published", function () {
+
+            buildRackLine(boardState, letters);
+            
+            var observer = { callback: function (newAnswer: Array<string>) { } };
+            spyOn(observer, "callback").and.callThrough();
+
+            boardState.answerChanged = observer.callback;
+
+            boardStateManipulator.shuntRackToRight(boardState.rack[targetTileIndex])
+
+            expect(observer.callback).not.toHaveBeenCalled();
+        });
+    });
+
 });
 
 describe("When shuntDown()", function () {

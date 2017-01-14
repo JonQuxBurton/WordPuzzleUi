@@ -290,7 +290,7 @@ describe("When shuntToRack()", function () {
             var observer = { callback: function (sourceTileId, destinationTileId) { } };
             spyOn(observer, "callback").and.callThrough();
             boardState.lettersShunted = observer.callback;
-            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0]);
+            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0], null);
             expect(observer.callback).toHaveBeenCalledTimes(1);
             expect(observer.callback).toHaveBeenCalledWith(boardState.rack[shuntedTileDestination].id, boardState.lines[0][shuntedTileOrigin].id);
         });
@@ -305,7 +305,7 @@ describe("When shuntToRack()", function () {
             var observer = { callback: function (newAnswer) { } };
             spyOn(observer, "callback").and.callThrough();
             boardState.answerChanged = observer.callback;
-            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0]);
+            boardStateManipulator.shuntToRack(boardState.lines[0][targetTileIndex], boardState.rack[0], null);
             expect(observer.callback).toHaveBeenCalledTimes(1);
             expect(observer.callback).toHaveBeenCalledWith(expected);
         });
@@ -376,6 +376,18 @@ describe("When shuntRackToRight()", function () {
             boardStateManipulator.shuntRackToRight(boardState.rack[targetTileIndex]);
             var actual = boardState.rack[0].letter.getValueOrSpace() + boardState.rack[1].letter.getValueOrSpace() + boardState.rack[2].letter.getValueOrSpace() + boardState.rack[3].letter.getValueOrSpace();
             expect(actual).toBe(expected);
+        });
+    });
+    testCases([
+        ["WAN ", 0, " WAN"]
+    ], function (letters, targetTileIndex, expected) {
+        it("given the Letters '" + letters + "' and target Tile " + targetTileIndex + " answerChanged event is not published", function () {
+            buildRackLine(boardState, letters);
+            var observer = { callback: function (newAnswer) { } };
+            spyOn(observer, "callback").and.callThrough();
+            boardState.answerChanged = observer.callback;
+            boardStateManipulator.shuntRackToRight(boardState.rack[targetTileIndex]);
+            expect(observer.callback).not.toHaveBeenCalled();
         });
     });
 });
