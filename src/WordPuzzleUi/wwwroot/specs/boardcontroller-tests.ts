@@ -217,7 +217,7 @@ describe("When moveLetter()", function () {
             boardController.moveLetter(0, 3);
 
             expect(boardStateManipulator.shuntToRack).toHaveBeenCalledTimes(1);
-            expect(boardStateManipulator.shuntToRack).toHaveBeenCalledWith(jasmine.objectContaining({ id: 0 }), jasmine.objectContaining({ id: 3 }));
+            expect(boardStateManipulator.shuntToRack).toHaveBeenCalledWith(jasmine.objectContaining({ id: 0 }), jasmine.objectContaining({ id: 3 }), jasmine.objectContaining({ value: "M" }));
             expect(boardStateManipulator.shuntToRight).not.toHaveBeenCalled();
             expect(boardStateManipulator.shuntToLeft).not.toHaveBeenCalled();
             expect(boardStateManipulator.shuntUp).not.toHaveBeenCalled();
