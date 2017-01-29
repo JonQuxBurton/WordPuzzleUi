@@ -25,16 +25,16 @@ namespace JonQuxBurton.WordPuzzle {
             var self = this;
 
             _(this.boardState.rack).forEach(function (tile) {
-                var x = this.config.paddingLeft + ((tile.id - 1) * tileSize);
-                var newTile = self.appendTile(self.gameDiv, tile.id, x, this.config.paddingTop, "");
+                var x = self.config.paddingLeft + ((tile.id - 1) * tileSize);
+                var newTile = self.appendTile(self.gameDiv, tile.id, x, self.config.paddingTop, "");
                 self.appendLetter(newTile, tile.letter.value);
             });
 
             var numberOfLetters = this.boardState.rack.length;
 
             _.forEach(this.boardState.getBoardTiles(), (tile) => {
-                var x = this.config.paddingLeft + (tile.x * tileSize);
-                var y = this.config.paddingTop + (tile.y * tileSize);
+                var x = self.config.paddingLeft + (tile.x * tileSize);
+                var y = self.config.paddingTop + (tile.y * tileSize);
                 self.appendTile(self.gameDiv, tile.id, x, y, "tile-board");
             });
             
