@@ -4,6 +4,8 @@ var JonQuxBurton;
     (function (WordPuzzle) {
         var Config = (function () {
             function Config() {
+                this.paddingTop = 0;
+                this.paddingLeft = 0;
             }
             return Config;
         }());

@@ -16,17 +16,21 @@ var JonQuxBurton;
                 this.boardState = boardState;
             }
             GameBuilder.prototype.build = function () {
+                var _this = this;
                 var tileSize = this.config.tileSize;
                 var self = this;
                 _(this.boardState.rack).forEach(function (tile) {
-                    var newTile = self.appendTile(self.gameDiv, tile.id, (tile.id - 1) * tileSize, "0", "");
+                    var x = this.config.paddingLeft + ((tile.id - 1) * tileSize);
+                    var newTile = self.appendTile(self.gameDiv, tile.id, x, this.config.paddingTop, "");
                     self.appendLetter(newTile, tile.letter.value);
                 });
                 var numberOfLetters = this.boardState.rack.length;
                 _.forEach(this.boardState.getBoardTiles(), function (tile) {
-                    self.appendTile(self.gameDiv, tile.id, (tile.x * tileSize), (tile.y * tileSize) + "rem", "tile-board");
+                    var x = _this.config.paddingLeft + (tile.x * tileSize);
+                    var y = _this.config.paddingTop + (tile.y * tileSize);
+                    self.appendTile(self.gameDiv, tile.id, x, y, "tile-board");
                 });
-                this.answerResultDiv.css({ left: ((numberOfLetters) * tileSize) + "rem", top: tileSize + "rem" });
+                this.answerResultDiv.css({ left: (this.config.paddingLeft + (numberOfLetters * tileSize)) + "rem", top: this.config.paddingTop + "rem" });
                 this.gameDiv.append(this.answerResultDiv);
                 this.enableDragAndDrop();
             };
@@ -37,7 +41,7 @@ var JonQuxBurton;
                 div.appendTo(tileDiv);
             };
             GameBuilder.prototype.appendTile = function (gameDiv, tileId, left, top, className) {
-                var div = this.$("<div/>", { class: "droppable tile " + className, "data-tileid": tileId, style: "left:" + left + "rem; top: " + top });
+                var div = this.$("<div/>", { class: "droppable tile " + className, "data-tileid": tileId, style: "left:" + left + "rem; top: " + top + "rem" });
                 div.appendTo(gameDiv);
                 return div;
             };
